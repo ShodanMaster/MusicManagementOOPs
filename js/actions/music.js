@@ -38,23 +38,39 @@ $(document).ready(function () {
         lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]]
     });
 
-    // Event delegation for handling Edit button click
+
+    $('#createButton').on('click', function (e) {
+        e.preventDefault();
+        
+        // Reset form fields
+        $('#music-form')[0].reset();
+        $('#musicId').val(""); // Clear hidden input for ID
+        
+        // Set modal title and button text
+        $('#addMusicModalLabel').text('Add Music');
+        $('#saveBtn').text('Save Music');
+
+        // Show the modal
+        $('#addMusicModal').modal('show');
+    });
+
+    // Handle Edit Button Click (Using Event Delegation)
     $('#musicsTable').on('click', '.edit-btn', function () {
         var musicId = $(this).data('id');
         var musicTitle = $(this).data('music');
         var musicCreator = $(this).data('creator');
-
-        console.log(musicId);
-        console.log(musicTitle);
-        console.log(musicCreator);
         
-        // Set the values in the modal
-        $('#addMusicModal').find('input[name="musicId"]').val(musicId);
-        $('#addMusicModal').find('input[name="music"]').val(musicTitle);
-        $('#addMusicModal').find('input[name="creator"]').val(musicCreator);
+        // Populate form fields with existing data
+        $('#musicId').val(musicId);
+        $('#music').val(musicTitle);
+        $('#creator').val(musicCreator);
 
-        $('#addMusicModalLabel').html('Edit Music');
-        $('#saveBtn').html('Update Music');
+        // Set modal title and button text
+        $('#addMusicModalLabel').text('Edit Music');
+        $('#saveBtn').text('Update Music');
+
+        // Show the modal
+        $('#addMusicModal').modal('show');
     });
 
     // Event delegation for handling Delete button click

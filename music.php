@@ -13,13 +13,12 @@ include("app/header.php");
       <form id="music-form">
         <input type="hidden" name="musicId" id="musicId">
         <div class="modal-body">
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <input type="text" class="form-control" name="music" id="music" placeholder="Music" required>
             </div>           
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <input type="text" class="form-control" name="creator" id="creator" placeholder="Creator" required>
             </div>           
-
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -33,7 +32,7 @@ include("app/header.php");
 <div class="d-flex justify-content-between mb-3">
 <h1>Music</h1>
 
-<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addMusicModal">
+<button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addMusicModal" id="createButton">
     Add Music
 </button>
 </div>
