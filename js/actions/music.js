@@ -23,7 +23,7 @@ $(document).ready(function () {
                 data: null,
                 render: function (data, type, row) {
                     return `
-                        <button class="btn btn-sm btn-info edit-btn" data-bs-toggle="modal" data-bs-target="#editTaskModal" 
+                        <button class="btn btn-sm btn-info edit-btn" data-bs-toggle="modal" data-bs-target="#addMusicModal" 
                                 data-id="${row.id}" data-music="${row.music}" data-creator="${row.creator}">
                             Edit
                         </button>
@@ -44,10 +44,17 @@ $(document).ready(function () {
         var musicTitle = $(this).data('music');
         var musicCreator = $(this).data('creator');
 
+        console.log(musicId);
+        console.log(musicTitle);
+        console.log(musicCreator);
+        
         // Set the values in the modal
-        $('#editTaskModal').find('input[name="musicId"]').val(musicId);
-        $('#editTaskModal').find('input[name="music"]').val(musicTitle);
-        $('#editTaskModal').find('input[name="creator"]').val(musicCreator);
+        $('#addMusicModal').find('input[name="musicId"]').val(musicId);
+        $('#addMusicModal').find('input[name="music"]').val(musicTitle);
+        $('#addMusicModal').find('input[name="creator"]').val(musicCreator);
+
+        $('#addMusicModalLabel').html('Edit Music');
+        $('#saveBtn').html('Update Music');
     });
 
     // Event delegation for handling Delete button click
@@ -55,28 +62,50 @@ $(document).ready(function () {
         var musicId = $(this).data('id');
         
         // You can trigger the confirmation dialog here or directly delete the music item
-        if (confirm("Are you sure you want to delete this music?")) {
-            $.ajax({
-                url: 'routes/music.php',
-                type: 'POST',
-                data: {
-                    action: 'delete',
-                    id: musicId
-                },
-                success: function(response) {
-                    var result = JSON.parse(response);
-                    if (result.status === 200) {
-                        // Refresh the table to show the updated data
-                        table.ajax.reload();
-                    } else {
-                        alert(result.message);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'routes/music.php?action=delete',
+                    type: 'POST',
+                    data: {
+                        action: 'delete',
+                        musicId: musicId
+                    },
+                    success: function(response) {
+                        if (response.status === 200) {
+                            Swal.fire(
+                                "Deleted!",
+                                "Music has been deleted.",
+                                "success"
+                            );
+                            table.ajax.reload();
+                        } else {
+                            Swal.fire(
+                                "Error!",
+                                response.message,
+                                "error"
+                            );
+                        }
+                    },
+                    error: function() {
+                        Swal.fire(
+                            "Error!",
+                            "Failed to delete the music item.",
+                            "error"
+                        );
                     }
-                },
-                error: function() {
-                    alert('Error deleting the music item.');
-                }
-            });
-        }
+                });
+            }
+        });
+        
     });
 
     // Handle Add Music Form submission via AJAX
@@ -88,19 +117,24 @@ $(document).ready(function () {
 
         // Validate inputs
         if (music.trim() === "" || creator.trim() === "") {
-            alert("Please fill in both music and creator fields.");
+            Swal.fire({
+                icon: "warning",
+                title: "Missing Information",
+                text: "Please fill in both music and creator fields.",
+                confirmButtonColor: "#3085d6"
+            });
             return;
         }
+        
 
+        var formData = new FormData(this);
         // Send data via AJAX
         $.ajax({
-            url: 'routes/music.php',
+            url: 'routes/music.php?action=add',
             type: 'POST',
-            data: {
-                action: 'add',
-                music: music,
-                creator: creator
-            },
+            data: formData,
+            contentType: false,
+            processData: false,
             success: function (response) {
                 console.log(response);
                 

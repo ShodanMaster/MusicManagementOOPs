@@ -32,19 +32,18 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Collect POST data
+    $id = $_POST["musicId"] ?? null;
     $music = $_POST["music"] ?? "";
     $creator = $_POST["creator"] ?? "";
 
-    if (empty($music) || empty($creator)) {
-        echo json_encode([
-            "status" => 400,
-            "message" => "Missing required fields: 'music' or 'creator'"
-        ]);
+    if ($action === 'add') {
+        $response = $musicController->addMusic($music, $creator ,$id);
+        echo $response;
         exit;
     }
 
-    if ($action === 'add') {
-        $response = $musicController->addMusic($music, $creator);
+    if ($action === 'delete') {
+        $response = $musicController->deleteMusic($id);
         echo $response;
         exit;
     }

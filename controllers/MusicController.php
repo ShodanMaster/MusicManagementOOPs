@@ -30,8 +30,15 @@ class MusicController extends Music {
         }
     }
 
-    public function addMusic($music, $creator) {
+    public function addMusic($music, $creator ,$id=null) {
         try {
+
+            if($id!=null){
+                $addMusic = $this->musicUpdate($id, $music, $creator);
+                return json_encode($addMusic);
+                
+            }
+            
             $addMusic = $this->musicAdd($music, $creator);
             return json_encode($addMusic);
         } catch (Exception $e) {
@@ -41,5 +48,10 @@ class MusicController extends Music {
                 "error" => $e->getMessage()
             ]);
         }
+    }
+
+    public function deleteMusic($id){
+        $deleteMusic = $this->musicDelete($id);
+        return json_encode($deleteMusic);
     }
 }

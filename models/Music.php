@@ -100,5 +100,81 @@ class Music extends Dbconfig {
             return ["status" => 500, "message" => "Database error: " . $e->getMessage()];
         }
     }
+
+    protected function musicUpdate($id, $music, $creator) {
+        try {
+            $conn = $this->connect();
+            $conn->begin_transaction();
+    
+            $sql = "SELECT user_id FROM musics WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                $task = $result->fetch_assoc();
+    
+                if ($task['user_id'] == $this->userId) {
+                    $sql = "UPDATE musics SET music=?, creator=? WHERE id=?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("ssi", $music, $creator, $id);
+    
+                    if ($stmt->execute()) {
+                        $conn->commit();
+                        return ['status' => 200, 'message' => 'Music Updated Successfully'];
+                    } else {
+                        $conn->rollback();
+                        return ["status" => 500, "message" => "Music Update Failed"];
+                    }
+                } else {
+                    return ["status" => 403, "message" => "Unauthorized Access"];
+                }
+            } else {
+                return ["status" => 404, "message" => "Music Not Found"];
+            }
+        } catch (mysqli_sql_exception $e) {
+            $conn->rollback();
+            return ["status" => 500, "message" => "Database Error: " . $e->getMessage()];
+        }
+    }
+
+    protected function musicDelete($id){
+        try {
+            $conn = $this->connect();
+            $conn->begin_transaction();
+    
+            $sql = "SELECT user_id FROM musics WHERE id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                $task = $result->fetch_assoc();
+    
+                if ($task['user_id'] == $this->userId) {
+                    $sql = 'DELETE FROM musics WHERE id = ?';
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param('i', $id);
+    
+                    if ($stmt->execute()) {
+                        $conn->commit();
+                        return ['status' => 200, 'message' => 'Music Deleted Successfully'];
+                    } else {
+                        $conn->rollback();
+                        return ["status" => 500, "message" => "Music Delete Failed"];
+                    }
+                } else {
+                    return ["status" => 403, "message" => "Unauthorized Access"];
+                }
+            } else {
+                return ["status" => 404, "message" => "Music Not Found"];
+            }
+        } catch (mysqli_sql_exception $e) {
+            $conn->rollback();
+            return ["status" => 500, "message" => "Database Error: " . $e->getMessage()];
+        }
+    }
 }
 ?>

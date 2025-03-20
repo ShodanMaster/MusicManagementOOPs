@@ -11,6 +11,7 @@ include("app/header.php");
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form id="music-form">
+        <input type="hidden" name="musicId" id="musicId">
         <div class="modal-body">
             <div class="form-group">
                 <input type="text" class="form-control" name="music" id="music" placeholder="Music" required>
@@ -22,7 +23,7 @@ include("app/header.php");
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary" id="saveBtn">Save changes</button>
         </div>
       </form>
     </div>
