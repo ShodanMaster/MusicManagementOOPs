@@ -8,6 +8,10 @@ include_once(__DIR__ . "/../config/session.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src= "js/jquery/jquery.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
     <script src="js/sweetalert/sweetalert.js"></script>
 </head>
@@ -21,7 +25,7 @@ include_once(__DIR__ . "/../config/session.php");
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="music">Music</a>
+          <a class="nav-link active" aria-current="page" href="music.php">Music</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
