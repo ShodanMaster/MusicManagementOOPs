@@ -42,7 +42,7 @@ include("app/header.php");
         Your Musics
     </div>
     <div class="card-body">
-        <table id="msuicsTable" class="display">
+        <table id="musicsTable" class="display">
             <thead>
                 <tr>
                     <th>#</th>

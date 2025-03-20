@@ -1,63 +1,57 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-error_log("Request method: " . $_SERVER["REQUEST_METHOD"]);
+header('Content-Type: application/json');
+error_reporting(E_ALL); // Log errors in development, turn off for production
+ini_set('display_errors', 1); // Disable in production
 
 require_once("../controllers/MusicController.php");
 
 $musicController = new MusicController();
 
-header('Content-Type: application/json');
+$action = $_REQUEST['action'] ?? ''; // Get the action from the request
 
-$action = $_REQUEST['action'] ?? '';
+if ($_SERVER["REQUEST_METHOD"] == "GET") {  
+        $response = $musicController->getMusics();
+        
+        // Decode JSON response to ensure it's valid
+        $decodedResponse = json_decode($response, true);
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        if ($decodedResponse === null) {
+            echo json_encode([
+                "status" => 500, 
+                "message" => "Invalid JSON response from Music Controller",
+                "debug" => $response
+            ]);
+            exit;
+        }
 
-    $response = $musicController->getMusics();
-
-    if (!json_decode($response, true)) {
-        echo json_encode(["status" => 500, "message" => "Invalid JSON response", "debug" => $response]);
+        echo $response;
         exit;
-    }
-
-    echo $response;
-    exit;
+    
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $_POST["id"] ?? "";
+    // Collect POST data
     $music = $_POST["music"] ?? "";
     $creator = $_POST["creator"] ?? "";
-    $status = $_POST["status"] ?? "";
+
+    if (empty($music) || empty($creator)) {
+        echo json_encode([
+            "status" => 400,
+            "message" => "Missing required fields: 'music' or 'creator'"
+        ]);
+        exit;
+    }
 
     if ($action === 'add') {
         $response = $musicController->addMusic($music, $creator);
         echo $response;
         exit;
     }
-
-    // if ($action === 'edit') {
-    //     $response = $musicController->editTask($id, $music, $creator);
-    //     echo $response;
-    //     exit;
-    // }
-
-    // if ($action === 'delete') {
-        
-    //     $response = $musicController->deleteTask($id);
-    //     echo $response;
-    //     exit;
-    // }
-
-    // if ($action === 'status') {
-        
-    //     $response = $musicController->updateStatus($id, $status);
-    //     echo $response;
-    //     exit;
-    // }
 }
 
-echo json_encode(["status" => 405, "message" => "Method Not Allowed"]);
+echo json_encode([
+    "status" => 405,
+    "message" => "Method Not Allowed"
+]);
 exit;

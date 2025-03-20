@@ -5,9 +5,8 @@ RewriteBase /MusicManagementOOPS/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Exclude "action" directory and authenticate.php from rewriting
-RewriteCond %{REQUEST_URI} !^/MusicManagementOOPS/routes/ [NC]
-RewriteCond %{REQUEST_URI} !^/MusicManagementOOPS/authenticate.php$ [NC]
+# Exclude the "action" directory from being rewritten
+RewriteCond %{REQUEST_URI} !^/MusicManagementOOPS/action/ [NC]
 
 # Redirect all other requests to index.php
 RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
