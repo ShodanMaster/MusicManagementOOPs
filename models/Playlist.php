@@ -102,6 +102,44 @@ class Playlist extends Dbconfig{
         }
     }
 
+    protected function playlistUpdate($id, $playlist){
+        try {
+            $conn = $this->connect();
+            $conn->begin_transaction();
+    
+            $sql = "SELECT user_id FROM playlists WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+    
+            if ($result->num_rows > 0) {
+                $task = $result->fetch_assoc();
+    
+                if ($task['user_id'] == $this->userId) {
+                    $sql = "UPDATE playlists SET playlist=? WHERE id=?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("si", $playlist, $id);
+    
+                    if ($stmt->execute()) {
+                        $conn->commit();
+                        return ['status' => 200, 'message' => 'Playlist Updated Successfully'];
+                    } else {
+                        $conn->rollback();
+                        return ["status" => 500, "message" => "Playlist Update Failed"];
+                    }
+                } else {
+                    return ["status" => 403, "message" => "Unauthorized Access"];
+                }
+            } else {
+                return ["status" => 404, "message" => "Playlist Not Found"];
+            }
+        } catch (mysqli_sql_exception $e) {
+            $conn->rollback();
+            return ["status" => 500, "message" => "Database Error: " . $e->getMessage()];
+        }
+    }
+
     protected function playlistDelete($id){
         try {
             $conn = $this->connect();

@@ -115,6 +115,22 @@ $(document).ready( function () {
         });
     });
 
+    // Handle Edit Button Click (Using Event Delegation)
+    $('#playlistsTable').on('click', '.edit-btn', function () {
+        var playlistId = $(this).data('id');
+        var playlistTitle = $(this).data('playlist');
+        
+        // Populate form fields with existing data
+        $('#playlistId').val(playlistId);
+        $('#playlist').val(playlistTitle);
+
+        // Set modal title and button text
+        $('#addPlaylistModalLabel').text('Edit Playlist');
+        $('#saveBtn').text('Update Playlist');
+
+        // Show the modal
+        $('#addPlaylistModal').modal('show');
+    });
     
 
     $('#playlistsTable').on('click', '.delete-btn', function () {

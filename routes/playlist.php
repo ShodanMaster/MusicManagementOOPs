@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $playlist = $_POST['playlist'] ?? '';
 
     if($action==='add'){
-        $response = $playlistController->addPlaylist($playlist);
+        $response = $playlistController->addPlaylist($playlist, $playlistId);
         echo $response;
         exit;
     }
