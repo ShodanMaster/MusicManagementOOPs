@@ -1,14 +1,14 @@
 <?php
 
 header('Content-Type: application/json');
-error_reporting(E_ALL); // Log errors in development, turn off for production
-ini_set('display_errors', 1); // Disable in production
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 require_once("../controllers/MusicPlaylistController.php");
 
 $musicController = new MusicPlaylistController();
 
-$action = $_REQUEST['action'] ?? ''; // Get the action from the request
+$action = $_REQUEST['action'] ?? '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {  
 

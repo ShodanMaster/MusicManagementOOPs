@@ -4,7 +4,7 @@ header('Content-Type: application/json');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-header('Content-Type: application/json'); // Ensure correct response type
+header('Content-Type: application/json');
 require_once(__DIR__ . "/../controllers/PlaylistController.php");
 
 $playlistController = new PlaylistController();
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     $decodedResponse = json_decode($response, true);
 
     if ($decodedResponse === null) {
-        error_log("Invalid JSON Response: " . $response); // Log error for debugging
+        error_log("Invalid JSON Response: " . $response);
         echo json_encode([
             "status" => 500, 
             "message" => "Invalid JSON response from Playlist Controller",

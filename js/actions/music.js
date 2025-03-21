@@ -45,15 +45,12 @@ $(document).ready(function () {
     $('#createButton').on('click', function (e) {
         e.preventDefault();
         
-        // Reset form fields
         $('#music-form')[0].reset();
-        $('#musicId').val(""); // Clear hidden input for ID
+        $('#musicId').val("");
         
-        // Set modal title and button text
         $('#addMusicModalLabel').text('Add Music');
         $('#saveBtn').text('Save Music');
-
-        // Show the modal
+        
         $('#addMusicModal').modal('show');
     });
     
@@ -105,12 +102,10 @@ $(document).ready(function () {
             }
         });
     });
-
-    // Event delegation for handling Delete button click
+    
     $('#musicsTable').on('click', '.delete-btn', function () {
         var musicId = $(this).data('id');
         
-        // You can trigger the confirmation dialog here or directly delete the music item
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -156,15 +151,13 @@ $(document).ready(function () {
         });
         
     });
-
-    // Handle Add Music Form submission via AJAX
+    
     $('#music-form').on('submit', function (e) {
-        e.preventDefault(); // Prevent the default form submission
+        e.preventDefault(); 
 
         var music = $('#music').val();
         var creator = $('#creator').val();
-
-        // Validate inputs
+        
         if (music.trim() === "" || creator.trim() === "") {
             Swal.fire({
                 icon: "warning",
@@ -176,7 +169,7 @@ $(document).ready(function () {
         }
 
         var formData = new FormData(this);
-        // Send data via AJAX
+        
         $.ajax({
             url: 'routes/music.php?action=add',
             type: 'POST',

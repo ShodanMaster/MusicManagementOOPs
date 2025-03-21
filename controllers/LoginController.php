@@ -6,7 +6,6 @@ class LoginController extends User{
 
     public function authenticate($username, $password) {
         $authenticated = $this->authenticated($username, $password);
-        // print_r( $authenticated);
 
         if ($authenticated['status'] === 200) {
             return json_encode([
@@ -21,7 +20,7 @@ class LoginController extends User{
     
     public function register($username, $password, $confirmPassword) {
         $validation = $this->validate($username, $password, $confirmPassword);
-        // print_r($validation);exit;
+        
         if ($validation['status'] !== 200) {
             return json_encode($validation);
         }

@@ -8,18 +8,16 @@ class PlaylistController extends Playlist{
         try {
             $playlistJson = $this->userPlaylists();
             $playlists = json_decode($playlistJson, true);
-
-            // Check if JSON decoding was successful
+            
             if ($playlists === null) {
                 return json_encode([
                     "status" => 500,
                     "message" => "Invalid JSON response from userPlaylists()",
                     "json_error" => json_last_error_msg(),
-                    "debug" => $playlistJson // Debug output
+                    "debug" => $playlistJson 
                 ]);
             }
-
-            // Check if "data" key exists
+            
             if (!isset($playlists["data"])) {
                 return json_encode([
                     "status" => 500,

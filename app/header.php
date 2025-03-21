@@ -1,5 +1,5 @@
 <?php 
-// require_once("../config/session.php");
+
 include_once(__DIR__ . "/../config/session.php");
 ?>
 <!DOCTYPE html>

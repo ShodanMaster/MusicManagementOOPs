@@ -43,18 +43,18 @@ class MusicPlaylist extends Dbconfig {
         $conn = $this->connect();
         $sql = "SELECT COUNT(*) FROM playlist_music WHERE playlist_id = ? AND music_id = ?";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ii", $playlist, $musicId); // Ensure correct order
+        $stmt->bind_param("ii", $playlist, $musicId);
         $stmt->execute();
         $stmt->bind_result($count);
         $stmt->fetch();
         $stmt->close();
     
-        return $count > 0; // Returns true if exists, false otherwise
+        return $count > 0;
     }
 
     protected function MusicsPlaylist($playlistId) {
         $conn = $this->connect();
-        $userId = $_SESSION['user_id'];  // Ensure user ID is used
+        $userId = $_SESSION['user_id'];
     
         $sql = "SELECT m.id, m.music, m.creator 
                 FROM playlist_music pm

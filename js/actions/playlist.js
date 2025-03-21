@@ -48,24 +48,20 @@ $(document).ready( function () {
     $('#createButton').on('click', function (e) {
         e.preventDefault();
         
-        // Reset form fields
         $('#playlist-form')[0].reset();
-        $('#playlistId').val(""); // Clear hidden input for ID
+        $('#playlistId').val("");
         
-        // Set modal title and button text
         $('#addPlaylistModalLabel').text('Add Playlist');
         $('#saveBtn').text('Save Playlist');
-
-        // Show the modal
+        
         $('#addPlaylistModal').modal('show');
     });
 
     $('#playlist-form').on('submit', function (e) {
-        e.preventDefault(); // Prevent the default form submission
+        e.preventDefault();
 
         var playlist = $('#playlist').val();
-
-        // Validate inputs
+        
         if (playlist.trim() === "") {
             Swal.fire({
                 icon: "warning",
@@ -79,7 +75,7 @@ $(document).ready( function () {
 
         var formData = new FormData(this);
         formData.append('action','add');
-        // Send data via AJAX
+        
         $.ajax({
             url: 'routes/playlist.php',
             type: 'POST',
@@ -118,28 +114,23 @@ $(document).ready( function () {
             }
         });
     });
-
-    // Handle Edit Button Click (Using Event Delegation)
+    
     $('#playlistsTable').on('click', '.edit-btn', function () {
         var playlistId = $(this).data('id');
         var playlistTitle = $(this).data('playlist');
         
-        // Populate form fields with existing data
         $('#playlistId').val(playlistId);
         $('#playlist').val(playlistTitle);
-
-        // Set modal title and button text
+        
         $('#addPlaylistModalLabel').text('Edit Playlist');
         $('#saveBtn').text('Update Playlist');
-
-        // Show the modal
+        
         $('#addPlaylistModal').modal('show');
     });
 
     $('#playlistsTable').on('click', '.delete-btn', function () {
         var playlistId = $(this).data('id');
         
-        // You can trigger the confirmation dialog here or directly delete the music item
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -196,7 +187,7 @@ $(document).ready( function () {
         $.ajax({
             type: "POST",
             url: "routes/musicPlaylist.php",
-            data: { playlistId: playlistId, action: 'playlistmusics' }, // FIXED DATA FORMAT
+            data: { playlistId: playlistId, action: 'playlistmusics' },
             dataType: "json",
             success: function (response) {
                 console.log(response);

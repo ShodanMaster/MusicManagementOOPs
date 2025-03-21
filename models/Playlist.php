@@ -24,14 +24,12 @@ class Playlist extends Dbconfig{
             $start = (int)($_GET['start'] ?? 0);
             $length = (int)($_GET['length'] ?? 10);
             $searchValue = $_GET['search']['value'] ?? '';
-    
-            // Get total records count
+            
             $stmt = $conn->prepare("SELECT COUNT(*) as count FROM playlists WHERE user_id = ?");
             $stmt->bind_param("i", $this->userId);
             $stmt->execute();
             $totalRecords = $stmt->get_result()->fetch_assoc()['count'];
-    
-            // Query for filtered results
+            
             $query = "SELECT id, playlist FROM playlists WHERE user_id = ?";
             $params = [$this->userId];
             $types = "i";
@@ -42,15 +40,13 @@ class Playlist extends Dbconfig{
                 array_push($params, $searchValue);
                 $types .= "s";
             }
-    
-            // Get count of filtered records
+            
             $filterQuery = str_replace("SELECT id, playlist", "SELECT COUNT(*) as count", $query);
             $stmt = $conn->prepare($filterQuery);
             $stmt->bind_param($types, ...$params);
             $stmt->execute();
             $recordsFiltered = $stmt->get_result()->fetch_assoc()['count'];
-    
-            // Add ORDER BY and LIMIT
+            
             $query .= " ORDER BY id DESC LIMIT ?, ?";
             array_push($params, intval($start), intval($length));
             $types .= "ii";
