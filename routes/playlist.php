@@ -42,5 +42,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo $response;
         exit;
     }
+
+    if($action==='delete'){
+        $response = $playlistController->deletePlaylist($playlistId);
+        echo $response;
+        exit;
+    }
 }
 ?>

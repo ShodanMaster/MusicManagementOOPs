@@ -83,7 +83,6 @@ $(document).ready( function () {
             contentType: false,
             processData: false,
             success: function (response) {
-                console.log(response);
                 
                 if (response.status === 200) {
                     Swal.fire({
@@ -116,4 +115,55 @@ $(document).ready( function () {
         });
     });
 
+    
+
+    $('#playlistsTable').on('click', '.delete-btn', function () {
+        var playlistId = $(this).data('id');
+        
+        // You can trigger the confirmation dialog here or directly delete the music item
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'routes/playlist.php',
+                    type: 'POST',
+                    data: {
+                        action: 'delete',
+                        playlistId: playlistId
+                    },
+                    success: function(response) {
+                        if (response.status === 200) {
+                            Swal.fire(
+                                "Deleted!",
+                                "Playlist has been deleted.",
+                                "success"
+                            );
+                            table.draw();
+                        } else {
+                            Swal.fire(
+                                "Error!",
+                                response.message,
+                                "error"
+                            );
+                        }
+                    },
+                    error: function() {
+                        Swal.fire(
+                            "Error!",
+                            "Failed to delete the playlist item.",
+                            "error"
+                        );
+                    }
+                });
+            }
+        });
+        
+    });
 });

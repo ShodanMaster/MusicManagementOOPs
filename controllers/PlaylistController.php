@@ -53,10 +53,15 @@ class PlaylistController extends Playlist{
         } catch (Exception $e) {
             return json_encode([
                 "status" => 500,
-                "message" => "Failed to add music",
+                "message" => "Failed to add playlist",
                 "error" => $e->getMessage()
             ]);
         }
+    }
+
+    public function deletePlaylist($id){
+        $deletePlaylist = $this->playlistDelete($id);
+        return json_encode($deletePlaylist);
     }
 
 }

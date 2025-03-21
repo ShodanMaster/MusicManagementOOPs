@@ -102,7 +102,7 @@ $(document).ready(function () {
                                 "Music has been deleted.",
                                 "success"
                             );
-                            table.ajax.reload();
+                            table.draw();
                         } else {
                             Swal.fire(
                                 "Error!",
