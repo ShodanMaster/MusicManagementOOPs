@@ -26,6 +26,34 @@ include("app/header.php")
   </div>
 </div>
 
+<!-- View Playlist Modal -->
+<div class="modal fade" id="viewPlaylistModal" tabindex="-1" aria-labelledby="viewPlaylistModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h1 class="modal-title fs-5" id="viewPlaylistModalLabel">Playlist</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped" id="playlistMusicsTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Music</th>
+              <th>Creator</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="d-flex justify-content-between mb-3">
     <h1>PlayList</h1>
 

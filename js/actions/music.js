@@ -30,6 +30,9 @@ $(document).ready(function () {
                         <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}">
                             Delete
                         </button>
+                        <button class="btn btn-sm btn-success playlist-btn" data-bs-toggle="modal" data-bs-target="#addToPlaylistModal" data-id="${row.id}" data-music="${row.music}">
+                            Add to Playlist
+                        </button>
                     `;
                 }
             }
@@ -53,24 +56,54 @@ $(document).ready(function () {
         // Show the modal
         $('#addMusicModal').modal('show');
     });
-
-    // Handle Edit Button Click (Using Event Delegation)
+    
     $('#musicsTable').on('click', '.edit-btn', function () {
         var musicId = $(this).data('id');
         var musicTitle = $(this).data('music');
         var musicCreator = $(this).data('creator');
         
-        // Populate form fields with existing data
         $('#musicId').val(musicId);
         $('#music').val(musicTitle);
         $('#creator').val(musicCreator);
-
-        // Set modal title and button text
+        
         $('#addMusicModalLabel').text('Edit Music');
         $('#saveBtn').text('Update Music');
 
-        // Show the modal
         $('#addMusicModal').modal('show');
+    });
+    
+    $('#musicsTable').on('click', '.playlist-btn', function () {
+        var musicId = $(this).data('id');
+        var musicTitle = $(this).data('music');
+
+        $('#playlistmusicId').val(musicId);
+        $('#addToPlaylistModalLabel').text('Add ' + musicTitle + ' to Playlist');
+        $('#saveBtn').text('Update Music');
+
+        $('#addToPlaylistModal').modal('show');
+
+        $.ajax({
+            type: "get",
+            url: "routes/playlist.php",
+            dataType: "json",
+            success: function (response) {
+                var $playlistSelect = $('#playlist');
+                $playlistSelect.empty();
+
+                $playlistSelect.append('<option value="" selected disabled>-- Select Playlist --</option>');
+                
+                if (response.data && response.data.length > 0) {
+                    $.each(response.data, function (index, playlist) {
+                        $playlistSelect.append('<option value="' + playlist.id + '">' + playlist.playlist + '</option>');
+                    });
+                } else {
+                    $playlistSelect.append('<option value="" disabled>No playlists available</option>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching playlists:", error);
+            }
+        });
     });
 
     // Event delegation for handling Delete button click
@@ -141,7 +174,6 @@ $(document).ready(function () {
             });
             return;
         }
-        
 
         var formData = new FormData(this);
         // Send data via AJAX
@@ -187,6 +219,63 @@ $(document).ready(function () {
 
     $('#addMusicModal').on('hidden.bs.modal', function () {
         $(this).find('form')[0].reset();
+    });
+
+    $('#addtoplaylist-form').on('submit', function (e) {
+        e.preventDefault();
+
+        console.log("Inside");
+
+        var formData = new FormData(this);
+        formData.append('action', 'addToPlaylist');
+
+        $.ajax({
+            type: "POST",
+            url: "routes/musicPlaylist.php",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                console.log(response);
+                
+                if (response.status === 200) {
+                    Swal.fire({
+                        title: "Success!",
+                        text: response.message,
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    }).then(() => {
+                        table.ajax.reload();
+                        $('#addToPlaylistModal').modal('hide');
+                    });
+                } else {
+                    Swal.fire({
+                        title: "OOPS!",
+                        text: response.message,
+                        icon: "info",
+                        confirmButtonText: "OK",
+                    }).then(() => {
+                        
+                        $('#addToPlaylistModal').modal('hide');
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", {
+                    status: xhr.status,
+                    error: error,
+                    responseText: xhr.responseText
+                });
+            
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Error adding the playlist!",
+                    footer: `<strong>${error}</strong>`
+                });
+            }
+        });
+        
     });
 
 });

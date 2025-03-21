@@ -29,6 +29,32 @@ include("app/header.php");
   </div>
 </div>
 
+<!-- Add to Playlist -->
+<div class="modal fade" id="addToPlaylistModal" tabindex="-1" aria-labelledby="addToPlaylistModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h1 class="modal-title fs-5" id="addToPlaylistModalLabel">Add to Playlist</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form id="addtoplaylist-form">
+        <input type="hidden" name="playlistmusicId" id="playlistmusicId">
+        <div class="modal-body">
+            <div class="form-group mb-3">
+                <select class="form-control" name="playlist" id="playlist" required>
+                    <option value="" selected disabled>--select playlist--</option>
+                </select>
+            </div>         
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="saveBtn">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="d-flex justify-content-between mb-3">
 <h1>Music</h1>
 

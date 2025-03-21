@@ -33,6 +33,10 @@ $(document).ready( function () {
                         <button class="btn btn-sm btn-danger delete-btn" data-id="${row.id}">
                             Delete
                         </button>
+                        <button class="btn btn-sm btn-success viewplaylist-btn" data-bs-toggle="modal" data-bs-target="#viewPlaylistModal" 
+                                data-id="${row.id}" data-playlist="${row.playlist}">
+                            View Playlist
+                        </button>
                     `;
                 }
             }
@@ -131,7 +135,6 @@ $(document).ready( function () {
         // Show the modal
         $('#addPlaylistModal').modal('show');
     });
-    
 
     $('#playlistsTable').on('click', '.delete-btn', function () {
         var playlistId = $(this).data('id');
@@ -182,4 +185,39 @@ $(document).ready( function () {
         });
         
     });
+
+    $('#playlistsTable').on('click', '.viewplaylist-btn', function () {
+        var playlistId = $(this).data('id');
+        var playlistTitle = $(this).data('playlist');
+    
+        $('#viewPlaylistModalLabel').text('Musics on ' + playlistTitle);
+        $('#viewPlaylistModal').modal('show');
+    
+        $.ajax({
+            type: "POST",
+            url: "routes/musicPlaylist.php",
+            data: { playlistId: playlistId, action: 'playlistmusics' }, // FIXED DATA FORMAT
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+    
+                if (response.status === 200) {
+                    let html = "<ul class='list-group'>";
+                    response.data.forEach(function (music) {
+                        html += `<li class='list-group-item'>${music.music} by ${music.creator}</li>`;
+                    });
+                    html += "</ul>";
+    
+                    $('.modal-body').html(html);
+                } else {
+                    $('.modal-body').html('<p class="text-danger">' + response.message + '</p>');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", error);
+                $('.modal-body').html('<p class="text-danger">Error fetching data.</p>');
+            }
+        });
+    });     
+    
 });
