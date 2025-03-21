@@ -180,14 +180,12 @@ $(document).ready( function () {
     $('#playlistsTable').on('click', '.viewplaylist-btn', function () {
         var playlistId = $(this).data('id');
         var playlistTitle = $(this).data('playlist');
-    
-        // Ensure other modals are closed before opening View Playlist Modal
+        
         $('.modal').modal('hide');
     
         $('#viewPlaylistModalLabel').text('Musics on ' + playlistTitle);
         $('#viewPlaylistModal').modal('show');
-    
-        // Clear previous content to avoid conflicts
+        
         $('#viewPlaylistModal .modal-body').html('<p>Loading...</p>');
     
         $.ajax({
