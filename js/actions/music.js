@@ -168,8 +168,19 @@ $(document).ready(function () {
                     alert(response.message);
                 }
             },
-            error: function () {
-                alert('Error adding the music.');
+            error: function (xhr, status, error) {
+                console.error("AJAX Error:", {
+                    status: xhr.status,
+                    error: error,
+                    responseText: xhr.responseText
+                });
+            
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Error adding the playlist!",
+                    footer: `<strong>${error}</strong>`
+                });
             }
         });
     });

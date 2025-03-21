@@ -2,22 +2,19 @@
 include("app/header.php")
 ?>
 
-<!-- Music Modal -->
+<!-- Playlist Modal -->
 <div class="modal fade" id="addPlaylistModal" tabindex="-1" aria-labelledby="addPlaylistModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header bg-primary text-white">
-        <h1 class="modal-title fs-5" id="addPlaylistModalLabel">Add Music</h1>
+        <h1 class="modal-title fs-5" id="addPlaylistModalLabel">Add Playlist</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form id="music-form">
-        <input type="hidden" name="musicId" id="musicId">
+      <form id="playlist-form">
+        <input type="hidden" name="playlistId" id="playlistId">
         <div class="modal-body">
             <div class="form-group mb-3">
-                <input type="text" class="form-control" name="music" id="music" placeholder="Music" required>
-            </div>           
-            <div class="form-group mb-3">
-                <input type="text" class="form-control" name="creator" id="creator" placeholder="Creator" required>
+                <input type="text" class="form-control" name="playlist" id="playlist" placeholder="Playlist" required>
             </div>           
         </div>
         <div class="modal-footer">

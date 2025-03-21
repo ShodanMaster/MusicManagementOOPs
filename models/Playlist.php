@@ -84,5 +84,22 @@ class Playlist extends Dbconfig{
         }
     }
     
+    protected function playlistAdd($playlist){
+        try {
+            $conn = $this->connect();
+
+            $sql = "INSERT INTO playlists(user_id, playlist) VALUES (?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("is", $this->userId, $playlist);
+
+            if ($stmt->execute()) {
+                return ["status" => 200, "message" => "Playlist added successfully!"];
+            } else {
+                return ["status" => 500, "message" => "Playlist addition failed!"];
+            }
+        } catch (mysqli_sql_exception $e) {
+            return ["status" => 500, "message" => "Database error: " . $e->getMessage()];
+        }
+    }
 
 }

@@ -31,4 +31,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     echo json_encode($decodedResponse);
     exit;
 }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {  
+
+    $playlistId = $_POST['playlistId'] ?? null;
+    $playlist = $_POST['playlist'] ?? '';
+
+    if($action==='add'){
+        $response = $playlistController->addPlaylist($playlist);
+        echo $response;
+        exit;
+    }
+}
 ?>

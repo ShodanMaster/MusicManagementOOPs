@@ -39,4 +39,24 @@ class PlaylistController extends Playlist{
         }
     }
 
+    public function addPlaylist($playlist, $id=null){
+        try{
+            
+            if($id!=null){
+                $addPlaylist = $this->playlistUpdate($id, $playlist);
+                return json_encode($addPlaylist);
+            }
+
+            $addPlaylist = $this->playlistAdd($playlist);
+            return json_encode($addPlaylist);
+
+        } catch (Exception $e) {
+            return json_encode([
+                "status" => 500,
+                "message" => "Failed to add music",
+                "error" => $e->getMessage()
+            ]);
+        }
+    }
+
 }
