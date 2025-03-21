@@ -181,8 +181,14 @@ $(document).ready( function () {
         var playlistId = $(this).data('id');
         var playlistTitle = $(this).data('playlist');
     
+        // Ensure other modals are closed before opening View Playlist Modal
+        $('.modal').modal('hide');
+    
         $('#viewPlaylistModalLabel').text('Musics on ' + playlistTitle);
         $('#viewPlaylistModal').modal('show');
+    
+        // Clear previous content to avoid conflicts
+        $('#viewPlaylistModal .modal-body').html('<p>Loading...</p>');
     
         $.ajax({
             type: "POST",
@@ -199,16 +205,17 @@ $(document).ready( function () {
                     });
                     html += "</ul>";
     
-                    $('.modal-body').html(html);
+                    $('#viewPlaylistModal .modal-body').html(html);
                 } else {
-                    $('.modal-body').html('<p class="text-danger">' + response.message + '</p>');
+                    $('#viewPlaylistModal .modal-body').html('<p class="text-danger">' + response.message + '</p>');
                 }
             },
             error: function (xhr, status, error) {
                 console.error("AJAX Error:", error);
-                $('.modal-body').html('<p class="text-danger">Error fetching data.</p>');
+                $('#viewPlaylistModal .modal-body').html('<p class="text-danger">Error fetching data.</p>');
             }
         });
-    });     
+    });
+         
     
 });
